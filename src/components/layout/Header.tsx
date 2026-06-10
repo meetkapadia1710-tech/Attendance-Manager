@@ -24,10 +24,10 @@ export function Header({ onExport }: { onExport: () => void }) {
       className="sticky top-0 z-50 shadow-sm select-none"
       style={{ background: 'var(--color-surface-container)' }}
     >
-      <div className="flex items-center h-14 px-4 md:px-6 gap-3">
+      <div className="flex flex-wrap items-center min-h-14 py-2 lg:py-0 px-3 sm:px-6 gap-y-3 gap-x-2">
 
         {/* ── Brand ── */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 order-1">
           <span className="material-symbols-outlined fill" style={{ fontSize: 26, color: 'var(--color-primary)' }}>spa</span>
           <h1
             className="font-bold hidden sm:block leading-none"
@@ -38,7 +38,7 @@ export function Header({ onExport }: { onExport: () => void }) {
         </div>
 
         {/* ── Tabs (desktop) ── */}
-        <nav className="hidden lg:flex items-end gap-0 self-stretch relative ml-2" style={{ paddingTop: 6 }}>
+        <nav className="hidden lg:flex items-end gap-0 self-stretch relative ml-2 order-2" style={{ paddingTop: 6 }}>
           {TABS.map(tab => (
             <button
               key={tab.id}
@@ -64,13 +64,13 @@ export function Header({ onExport }: { onExport: () => void }) {
         </nav>
 
         {/* ── Spacer ── */}
-        <div className="flex-1" />
+        <div className="hidden lg:block flex-1 order-3" />
 
         {/* ── Month Nav (only on grid view) ── */}
         <motion.div
-          animate={{ opacity: view === 'grid' ? 1 : 0, pointerEvents: view === 'grid' ? 'auto' : 'none' }}
+          animate={{ opacity: view === 'grid' ? 1 : 0, pointerEvents: view === 'grid' ? 'auto' : 'none', height: view === 'grid' ? 'auto' : 0 }}
           transition={{ duration: 0.18 }}
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 w-full lg:w-auto order-5 lg:order-4 overflow-hidden"
         >
           <div
             className="flex items-center rounded-full border p-0.5"
@@ -124,7 +124,7 @@ export function Header({ onExport }: { onExport: () => void }) {
         </motion.div>
 
         {/* ── Right actions ── */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 order-4 ml-auto lg:ml-0 lg:order-5">
           {/* Add Staff — admin only */}
           {isAdmin && (
             <button
