@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
 import { fsSetEntry, fsClearEntry } from '../../lib/firestore';
-import { fmt12, calcMins, minsToHrStr } from '../../lib/utils';
+import { calcMins, minsToHrStr } from '../../lib/utils';
 import { Avatar } from '../ui/Avatar';
 import type { AttendanceEntry } from '../../lib/types';
 

@@ -7,8 +7,7 @@ import type { StaffMember } from '../../lib/types';
 
 export function StaffView() {
   const { openDialog, staff } = useStore();
-  const { user } = useAuthStore();
-  const isAdmin = !!user;
+  const { isAdmin } = useAuthStore();
   const [search, setSearch] = useState('');
 
   const filtered = search.trim()
@@ -93,8 +92,7 @@ export function StaffView() {
 
 function StaffItem({ staff: s, idx, isLast }: { staff: StaffMember; idx: number; isLast: boolean }) {
   const { openDialog } = useStore();
-  const { user } = useAuthStore();
-  const isAdmin = !!user;
+  const { isAdmin } = useAuthStore();
 
   return (
     <motion.div

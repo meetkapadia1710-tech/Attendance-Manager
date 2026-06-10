@@ -27,7 +27,9 @@ import { DeleteDialog } from './components/dialogs/DeleteDialog';
 // UI
 import { ToastContainer } from './components/ui/Toast';
 
-const viewVariants = {
+import type { Variants } from 'framer-motion';
+
+const viewVariants: Variants = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.2, 0, 0, 1] } },
   exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },

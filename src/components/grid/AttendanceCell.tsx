@@ -20,8 +20,7 @@ const STATUS_BG: Record<CellStatus, string> = {
 
 export function AttendanceCell({ staffId, date, entry, isToday }: Props) {
   const { openDialog } = useStore();
-  const { user } = useAuthStore();
-  const isAdmin = !!user;
+  const { isAdmin } = useAuthStore();
   const status = getCellStatus(entry);
   const cellRef = useRef<HTMLTableCellElement>(null);
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import type { StaffMember, AttendanceEntry } from '../../lib/types';
-import { isoDate, calcMins, minsToHrStr } from '../../lib/utils';
+import { isoDate, calcMins } from '../../lib/utils';
 import { AnimatedNumber } from '../ui/AnimatedNumber';
 
 interface Props {

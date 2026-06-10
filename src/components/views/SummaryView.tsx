@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
 import { isoDate, calcMins, minsToHrStr, MONTH_NAMES, avatarPalette, initials } from '../../lib/utils';
 import { AnimatedNumber } from '../ui/AnimatedNumber';
-import type { StaffMember, AttendanceEntry } from '../../lib/types';
+import type { StaffMember } from '../../lib/types';
 
 export function SummaryView({ onExport }: { onExport: () => void }) {
   const { year, month, staff, attendance } = useStore();

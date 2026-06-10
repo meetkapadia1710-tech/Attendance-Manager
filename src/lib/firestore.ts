@@ -17,7 +17,6 @@ import {
   onSnapshot,
   query,
   where,
-  orderBy,
   type Unsubscribe,
   type DocumentData,
 } from 'firebase/firestore';

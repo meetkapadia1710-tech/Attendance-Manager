@@ -28,7 +28,7 @@ export function AttendanceGrid() {
   const { year, month, monthDir, staff, attendance, loadingStaff, loadingAttendance } = useStore();
   const days = daysInMonth(year, month);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [_, setScrolled] = useState(false);
 
   // Track horizontal scroll for shadow cue
   useEffect(() => {
