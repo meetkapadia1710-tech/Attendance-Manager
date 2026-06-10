@@ -1,73 +1,65 @@
-# React + TypeScript + Vite
+# Mann Beauty Studio — Attendance Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, custom-built attendance management application for Mann Beauty Studio. Built with React, Vite, Tailwind CSS, and powered by Firebase Firestore.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Full-Screen Admin Gate**: A beautiful, secret-key protected login screen ensures only authorized personnel can access the dashboard.
+- **Real-Time Data Sync**: Powered by Firebase Firestore, all attendance records and staff additions reflect instantly across devices.
+- **Interactive Grid**: A robust, spreadsheet-like grid to view and manage daily attendance, automatically grouped by month.
+- **Monthly Summaries**: Automatically calculates total hours per staff member and total hours across the entire studio for any given month.
+- **CSV Export**: Export any month's attendance data directly to a perfectly formatted CSV file for payroll processing.
+- **Premium UI/UX**: Designed with deep plums, glassmorphism, floating micro-animations, and fluid framer-motion page transitions.
 
-## React Compiler
+## 🚀 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend Framework**: React 19 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4 + Material Symbols
+- **State Management**: Zustand
+- **Animations**: Framer Motion
+- **Database**: Firebase Firestore
 
-## Expanding the ESLint configuration
+## 🔒 Security & Environment Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+To run this app locally or deploy it, you will need a Firebase project and a custom admin password. 
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Create a `.env.local` file in the root directory and add the following keys:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Change this to your desired password for the Admin Gate
+VITE_ADMIN_SECRET=your_super_secret_password
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Local Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open `http://localhost:5173` in your browser.
+
+## 🌐 Deployment
+
+This application is ready to be deployed on **Vercel** or **Netlify**.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/meetkapadia1710-tech/Attendance-Manager&env=VITE_FIREBASE_API_KEY,VITE_FIREBASE_AUTH_DOMAIN,VITE_FIREBASE_PROJECT_ID,VITE_FIREBASE_STORAGE_BUCKET,VITE_FIREBASE_MESSAGING_SENDER_ID,VITE_FIREBASE_APP_ID,VITE_ADMIN_SECRET)
+
+**Important when Deploying:** Make sure to copy the variables from your `.env.local` file into the Environment Variables section of your hosting provider!
+
+---
+*Built specifically for Mann Beauty Studio.*
