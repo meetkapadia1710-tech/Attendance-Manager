@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 import type { AttendanceEntry, CellStatus } from '../../lib/types';
-import { getCellStatus, fmt12, minsToHrStr, calcMins } from '../../lib/utils';
+import { getCellStatus, fmt12, minsToHrStr, calcTotalMins, normalizeBlocks } from '../../lib/utils';
 import { useStore } from '../../store/useStore';
 import { useAuthStore } from '../../store/useAuthStore';
 
@@ -47,9 +47,7 @@ export function AttendanceCell({ staffId, date, entry, isToday }: Props) {
     if (e.key === 'ArrowUp')    focusCell(cellRef.current, -1, 0);
   }, [handleClick]);
 
-  const mins = entry?.timeIn && entry?.timeOut
-    ? calcMins(entry.timeIn, entry.timeOut)
-    : null;
+  const mins = calcTotalMins(entry);
 
   return (
     <td
@@ -83,12 +81,18 @@ function CellContent({
   if (status === 'empty') {
     return <span className="text-sm opacity-30 group-hover/cell:opacity-60 transition-opacity" style={{ color: 'var(--color-outline)' }}>—</span>;
   }
+  
+  const blocks = normalizeBlocks(entry);
+  const displayBlocks = blocks.length > 0 ? blocks : [{ in: '', out: '' }];
+
   if (status === 'error') {
     return (
       <div className="flex flex-col gap-0.5 items-center">
-        <span className="text-xs font-medium leading-tight" style={{ color: 'var(--color-error)' }}>
-          {fmt12(entry!.timeIn)} – {fmt12(entry!.timeOut)}
-        </span>
+        {displayBlocks.map((b, i) => (
+          <span key={i} className="text-[11px] font-medium leading-tight whitespace-nowrap" style={{ color: 'var(--color-error)' }}>
+            {fmt12(b.in)} – {fmt12(b.out)}
+          </span>
+        ))}
         <span className="flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wide" style={{ color: 'var(--color-error)' }}>
           <span className="material-symbols-outlined fill text-[12px]">error</span> Invalid
         </span>
@@ -98,19 +102,23 @@ function CellContent({
   if (status === 'inprogress') {
     return (
       <div className="flex flex-col gap-0.5 items-center">
-        <span className="text-xs leading-tight" style={{ color: 'var(--color-on-surface-variant)' }}>
-          {fmt12(entry!.timeIn)}
-        </span>
-        <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-wide">In Progress</span>
+        {displayBlocks.map((b, i) => (
+          <span key={i} className="text-[11px] leading-tight whitespace-nowrap" style={{ color: 'var(--color-on-surface-variant)' }}>
+            {b.in && !b.out ? fmt12(b.in) : `${fmt12(b.in)} – ${fmt12(b.out)}`}
+          </span>
+        ))}
+        <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-wide mt-0.5">In Progress</span>
       </div>
     );
   }
   return (
     <div className="flex flex-col gap-0.5 items-center">
-      <span className="text-[11px] leading-tight whitespace-nowrap" style={{ color: 'var(--color-on-surface-variant)' }}>
-        {fmt12(entry!.timeIn)} – {fmt12(entry!.timeOut)}
-      </span>
-      <span className="text-xs font-bold" style={{ color: 'var(--color-primary)' }}>
+      {displayBlocks.map((b, i) => (
+        <span key={i} className="text-[11px] leading-tight whitespace-nowrap" style={{ color: 'var(--color-on-surface-variant)' }}>
+          {fmt12(b.in)} – {fmt12(b.out)}
+        </span>
+      ))}
+      <span className="text-xs font-bold mt-0.5" style={{ color: 'var(--color-primary)' }}>
         {minsToHrStr(mins as number)}
       </span>
     </div>

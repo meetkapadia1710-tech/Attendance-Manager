@@ -1,4 +1,4 @@
-import type { CellStatus, AttendanceEntry } from './types';
+import type { CellStatus, AttendanceEntry, TimeBlock } from './types';
 
 // ── Constants ──────────────────────────────────────────────────
 export const MONTH_NAMES = [
@@ -84,13 +84,55 @@ export function fmt12(t: string): string {
   return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
 }
 
+// ── Block helpers ──────────────────────────────────────────────
+export function normalizeBlocks(entry: AttendanceEntry | null | undefined): TimeBlock[] {
+  if (!entry) return [];
+  if (entry.blocks && entry.blocks.length > 0) return entry.blocks;
+  if (entry.timeIn || entry.timeOut) {
+    return [{ in: entry.timeIn || '', out: entry.timeOut || '' }];
+  }
+  return [];
+}
+
+export function calcTotalMins(entry: AttendanceEntry | null): number | null {
+  const blocks = normalizeBlocks(entry);
+  if (blocks.length === 0) return null;
+  
+  let total = 0;
+  let hasValid = false;
+
+  for (const b of blocks) {
+    if (b.in && b.out) {
+      const m = calcMins(b.in, b.out);
+      if (m !== -1 && m !== null) {
+        total += m;
+        hasValid = true;
+      }
+    }
+  }
+  
+  return hasValid ? total : null;
+}
+
 // ── Cell status ────────────────────────────────────────────────
 export function getCellStatus(entry: AttendanceEntry | null): CellStatus {
-  if (!entry || (!entry.timeIn && !entry.timeOut)) return 'empty';
-  if (entry.timeIn && entry.timeOut) {
-    return calcMins(entry.timeIn, entry.timeOut) === -1 ? 'error' : 'present';
+  const blocks = normalizeBlocks(entry);
+  if (blocks.length === 0) return 'empty';
+  
+  let hasError = false;
+  let isInprogress = false;
+  
+  for (const b of blocks) {
+    if (b.in && !b.out) {
+      isInprogress = true;
+    } else if (b.in && b.out) {
+      if (calcMins(b.in, b.out) === -1) hasError = true;
+    }
   }
-  return 'inprogress'; // only timeIn
+  
+  if (hasError) return 'error';
+  if (isInprogress) return 'inprogress';
+  return 'present';
 }
 
 // ── CSV export ─────────────────────────────────────────────────

@@ -73,6 +73,7 @@ export async function fsSetEntry(
     staffId,
     timeIn:  entry.timeIn  ?? '',
     timeOut: entry.timeOut ?? '',
+    blocks:  entry.blocks  ?? [],
   });
 }
 
@@ -122,7 +123,11 @@ export function onAttendanceSnapshot(
     const data: Record<string, AttendanceEntry> = {};
     snap.docs.forEach(d => {
       const fd = d.data() as DocumentData;
-      data[d.id] = { timeIn: fd.timeIn ?? '', timeOut: fd.timeOut ?? '' };
+      data[d.id] = { 
+        timeIn: fd.timeIn ?? '', 
+        timeOut: fd.timeOut ?? '',
+        blocks: fd.blocks ?? []
+      };
     });
     cb(data);
   });

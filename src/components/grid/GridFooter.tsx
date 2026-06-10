@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import type { StaffMember, AttendanceEntry } from '../../lib/types';
-import { isoDate, calcMins } from '../../lib/utils';
+import { isoDate, calcTotalMins } from '../../lib/utils';
 import { AnimatedNumber } from '../ui/AnimatedNumber';
 
 interface Props {
@@ -19,10 +19,8 @@ export function GridFooter({ year, month, days, staff, attendance }: Props) {
       const date = isoDate(year, month, d);
       staff.forEach((s, idx) => {
         const e = attendance[`${date}__${s.id}`];
-        if (e?.timeIn && e?.timeOut) {
-          const m = calcMins(e.timeIn, e.timeOut);
-          if (typeof m === 'number' && m > 0) totals[idx] += m;
-        }
+        const tm = calcTotalMins(e ?? null);
+        if (typeof tm === 'number' && tm > 0) totals[idx] += tm;
       });
     }
     return totals;

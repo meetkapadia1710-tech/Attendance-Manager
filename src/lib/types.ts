@@ -5,10 +5,17 @@ export interface StaffMember {
   role: string;
 }
 
+// A single in/out time block
+export interface TimeBlock {
+  in: string;
+  out: string;
+}
+
 // Per-day attendance for one staff member
 export interface AttendanceEntry {
-  timeIn: string;  // HH:MM 24h, or ''
-  timeOut: string; // HH:MM 24h, or ''
+  timeIn: string;  // legacy HH:MM 24h, or ''
+  timeOut: string; // legacy HH:MM 24h, or ''
+  blocks?: TimeBlock[]; // multiple timings
 }
 
 // Derived cell status (never stored)

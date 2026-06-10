@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import type { StaffMember, AttendanceEntry } from '../../lib/types';
-import { DAY_SHORT, isoDate, isToday as checkToday, calcMins, minsToHrStr } from '../../lib/utils';
+import { DAY_SHORT, isoDate, isToday as checkToday, calcTotalMins, minsToHrStr } from '../../lib/utils';
 import { AttendanceCell } from './AttendanceCell';
 
 interface Props {
@@ -25,10 +25,8 @@ export const GridRow = memo(function GridRow({ year, month, day, staff, attendan
   let rowMins = 0;
   let hasData = false;
   entries.forEach(e => {
-    if (e?.timeIn && e?.timeOut) {
-      const m = calcMins(e.timeIn, e.timeOut);
-      if (typeof m === 'number' && m > 0) { rowMins += m; hasData = true; }
-    }
+    const tm = calcTotalMins(e);
+    if (typeof tm === 'number' && tm > 0) { rowMins += tm; hasData = true; }
   });
 
   const dateBg = todayRow
