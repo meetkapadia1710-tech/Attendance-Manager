@@ -12,7 +12,7 @@ export function BottomNav() {
   const { view, setView } = useStore();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-low border-t border-outline-variant flex">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-low border-t border-outline-variant flex">
       {TABS.map(tab => {
         const active = view === tab.id;
         return (

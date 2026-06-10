@@ -98,7 +98,7 @@ export default function App() {
         >
           <Header onExport={handleExport} />
 
-          <main className="flex-1 flex flex-col overflow-hidden pb-14 md:pb-0">
+          <main className="flex-1 flex flex-col overflow-hidden pb-14 lg:pb-0">
             <AnimatePresence mode="wait">
               {view === 'grid' && (
                 <motion.div key="grid" variants={viewVariants} initial="initial" animate="animate" exit="exit"

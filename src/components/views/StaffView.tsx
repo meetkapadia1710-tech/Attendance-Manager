@@ -110,7 +110,7 @@ function StaffItem({ staff: s, idx, isLast }: { staff: StaffMember; idx: number;
       </div>
       {/* Actions — admin only, visible on hover */}
       {isAdmin && (
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex gap-1 opacity-100 md:opacity-50 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => openDialog({ type: 'editStaff', staffId: s.id })}
             className="p-2 rounded-full hover:bg-[color:var(--color-surface-container-highest)] text-[color:var(--color-on-surface-variant)] transition-colors active:scale-90"

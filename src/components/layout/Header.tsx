@@ -38,7 +38,7 @@ export function Header({ onExport }: { onExport: () => void }) {
         </div>
 
         {/* ── Tabs (desktop) ── */}
-        <nav className="hidden md:flex items-end gap-0 self-stretch relative ml-2" style={{ paddingTop: 6 }}>
+        <nav className="hidden lg:flex items-end gap-0 self-stretch relative ml-2" style={{ paddingTop: 6 }}>
           {TABS.map(tab => (
             <button
               key={tab.id}
@@ -129,7 +129,7 @@ export function Header({ onExport }: { onExport: () => void }) {
           {isAdmin && (
             <button
               onClick={() => openDialog({ type: 'addStaff' })}
-              className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-colors active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-colors active:scale-95"
               style={{
                 background: 'var(--color-secondary-container)',
                 color: 'var(--color-on-secondary-container)',
