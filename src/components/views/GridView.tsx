@@ -13,7 +13,7 @@ export function GridView() {
 
   staff.forEach(s => {
     const e = attendance[`${todayStr}__${s.id}`];
-    if (e?.blocks?.length > 0 || e?.timeIn) presentToday++;
+    if (e?.blocks?.length || e?.timeIn) presentToday++;
   });
 
   for (let d = 1; d <= days; d++) {
