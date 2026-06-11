@@ -177,9 +177,10 @@ export function TimeEntryDialog() {
                     return (
                       <motion.div
                         key={b._id}
-                        initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-                        animate={{ opacity: 1, height: 'auto', transitionEnd: { overflow: 'visible' } }}
-                        exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, height: 0, overflow: 'hidden', marginTop: 0 }}
+                        transition={{ duration: 0.18 }}
                         className="flex items-center gap-3"
                       >
                         <div className="flex-1 grid grid-cols-2 gap-3">
