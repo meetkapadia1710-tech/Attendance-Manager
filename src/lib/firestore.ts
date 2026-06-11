@@ -165,7 +165,7 @@ export function onAttendanceSnapshot(
 
 export async function fsBatchWrite(
   staff: StaffMember[],
-  attendance: Record<string, { date: string; staffId: string; timeIn: string; timeOut: string }>
+  attendance: Record<string, AttendanceEntry & { date: string; staffId: string }>
 ): Promise<void> {
   const CHUNK = 490; // Firestore batch limit is 500
   const allOps: (() => void)[] = [];

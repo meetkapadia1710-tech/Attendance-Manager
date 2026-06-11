@@ -52,7 +52,7 @@ export async function migrateLocalStorageToFirestore(): Promise<{
 
   // Build attendance map with required fields for Firestore queries
   const lsAtt = parseLs<Record<string, AttendanceEntry>>(LS_ATT_KEY, {});
-  const fsAtt: Record<string, { date: string; staffId: string; timeIn: string; timeOut: string }> = {};
+  const fsAtt: Record<string, AttendanceEntry & { date: string; staffId: string }> = {};
 
   for (const [key, entry] of Object.entries(lsAtt)) {
     const parts = key.split('__');
@@ -64,6 +64,7 @@ export async function migrateLocalStorageToFirestore(): Promise<{
       staffId,
       timeIn:  entry.timeIn  ?? '',
       timeOut: entry.timeOut ?? '',
+      blocks:  entry.blocks  ?? [],
     };
   }
 
