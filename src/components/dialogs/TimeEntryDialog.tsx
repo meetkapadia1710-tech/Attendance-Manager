@@ -394,7 +394,7 @@ function TimeField({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 w-[320px] bg-[color:var(--color-surface-container-high)] border border-[color:var(--color-outline-variant)] shadow-xl rounded-2xl p-5 z-[200]"
+            className="absolute top-full mt-2 bg-[color:var(--color-surface-container-high)] border border-[color:var(--color-outline-variant)] shadow-xl rounded-2xl p-4 sm:p-5 z-[200] left-0 right-0 sm:left-0 sm:right-auto sm:w-[320px]"
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-bold text-[color:var(--color-on-surface)] flex items-center gap-1.5">
