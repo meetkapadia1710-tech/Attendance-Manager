@@ -10,6 +10,7 @@ import {
   collection,
   doc,
   setDoc,
+  getDoc,
   updateDoc,
   deleteDoc,
   getDocs,
@@ -26,6 +27,33 @@ import type { StaffMember, AttendanceEntry } from './types';
 // ── Collection refs ────────────────────────────────────────────
 const staffCol  = () => collection(firestore, 'staff');
 const attCol    = () => collection(firestore, 'attendance');
+const configDoc = () => doc(firestore, 'config', 'adminSecret');
+
+// ── Admin Secret Key ───────────────────────────────────────────
+
+/**
+ * Fetch the admin secret key from Firestore.
+ * Falls back to the build-time env var if no Firestore doc exists yet.
+ */
+export async function fsGetAdminSecret(): Promise<string> {
+  try {
+    const snap = await getDoc(configDoc());
+    if (snap.exists()) {
+      return (snap.data().key as string) ?? '';
+    }
+  } catch {
+    // Network / permissions error — fall through to env fallback
+  }
+  return import.meta.env.VITE_ADMIN_SECRET ?? '';
+}
+
+/**
+ * Persist a new admin secret key to Firestore.
+ * Call only after verifying the current key first.
+ */
+export async function fsSetAdminSecret(newKey: string): Promise<void> {
+  await setDoc(configDoc(), { key: newKey });
+}
 
 // ── Key helpers ────────────────────────────────────────────────
 export function attDocId(date: string, staffId: string) {

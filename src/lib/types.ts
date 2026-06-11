@@ -30,6 +30,7 @@ export type DialogState =
   | { type: 'addStaff' }
   | { type: 'editStaff'; staffId: string }
   | { type: 'delete'; staffId: string }
+  | { type: 'changeKey' }
   | null;
 
 // Toast notification

@@ -6,6 +6,11 @@ import { calcMins, minsToHrStr, normalizeBlocks } from '../../lib/utils';
 import { Avatar } from '../ui/Avatar';
 import type { AttendanceEntry, TimeBlock } from '../../lib/types';
 
+/** Stable unique key for each time block (not stored — UI only) */
+type BlockRow = TimeBlock & { _id: string };
+let _uid = 0;
+const mkBlock = (b: TimeBlock = { in: '', out: '' }): BlockRow => ({ ...b, _id: `b${++_uid}` });
+
 const overlayV = {
   hidden:  { opacity: 0 },
   visible: { opacity: 1 },
@@ -29,7 +34,7 @@ export function TimeEntryDialog() {
   const sIdx = staff.findIndex(s => s.id === staffId);
   const sObj = staff[sIdx] ?? null;
 
-  const [blocks, setBlocks] = useState<TimeBlock[]>([{ in: '', out: '' }]);
+  const [blocks, setBlocks] = useState<BlockRow[]>([mkBlock()]);
   const [saving,  setSaving]  = useState(false);
   const [saved,   setSaved]   = useState(false);
   const inRef = useRef<any>(null);
@@ -40,17 +45,17 @@ export function TimeEntryDialog() {
     const key   = `${date}__${staffId}`;
     const entry: AttendanceEntry = attendance[key] ?? {};
     const norm = normalizeBlocks(entry);
-    setBlocks(norm.length ? norm : [{ in: '', out: '' }]);
+    setBlocks(norm.length ? norm.map(mkBlock) : [mkBlock()]);
     setSaving(false);
     setSaved(false);
     setTimeout(() => inRef.current?.focus(), 80);
   }, [open, date, staffId, attendance]);
 
-  const addBlock = () => setBlocks([...blocks, { in: '', out: '' }]);
+  const addBlock = () => setBlocks(prev => [...prev, mkBlock()]);
   const removeBlock = (i: number) => {
     const next = [...blocks];
     next.splice(i, 1);
-    setBlocks(next.length ? next : [{ in: '', out: '' }]);
+    setBlocks(next.length ? next : [mkBlock()]);
   };
   const updateBlock = (i: number, field: 'in' | 'out', val: string) => {
     const next = [...blocks];
@@ -94,7 +99,9 @@ export function TimeEntryDialog() {
     if (isError) return;
     setSaving(true);
     try {
-      await fsSetEntry(date, staffId, { timeIn: '', timeOut: '', blocks });
+      // Strip the internal _id before saving — Firestore only gets TimeBlock fields
+      const cleanBlocks: TimeBlock[] = blocks.map(({ _id: _, ...b }) => b);
+      await fsSetEntry(date, staffId, { timeIn: '', timeOut: '', blocks: cleanBlocks });
       // Firestore onSnapshot will push the update into the store automatically
       setSaved(true);
       addToast(`Saved — ${sObj?.name ?? 'Staff'}`, 'success');
@@ -169,7 +176,7 @@ export function TimeEntryDialog() {
                     const blockErr = !!b.in && !!b.out && calcMins(b.in, b.out) === -1;
                     return (
                       <motion.div
-                        key={i}
+                        key={b._id}
                         initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
                         animate={{ opacity: 1, height: 'auto', transitionEnd: { overflow: 'visible' } }}
                         exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
