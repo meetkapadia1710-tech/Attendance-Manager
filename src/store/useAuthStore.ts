@@ -19,13 +19,13 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>(_set => ({
-  // Restore from sessionStorage so refreshing doesn't kick you out
-  isAdmin: sessionStorage.getItem(SESSION_KEY) === 'true',
+  // Restore from localStorage so login is remembered across app closes
+  isAdmin: localStorage.getItem(SESSION_KEY) === 'true',
 
   async unlock(key: string) {
     const secret = await fsGetAdminSecret();
     if (key === secret) {
-      sessionStorage.setItem(SESSION_KEY, 'true');
+      localStorage.setItem(SESSION_KEY, 'true');
       _set({ isAdmin: true });
       return true;
     }
@@ -33,7 +33,7 @@ export const useAuthStore = create<AuthStore>(_set => ({
   },
 
   lock() {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
     _set({ isAdmin: false });
   },
 

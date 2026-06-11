@@ -21,7 +21,7 @@ export function Header({ onExport }: { onExport: () => void }) {
 
   return (
     <header
-      className="sticky top-0 z-50 shadow-sm select-none"
+      className="sticky top-0 z-50 shadow-sm select-none pt-[env(safe-area-inset-top)]"
       style={{ background: 'var(--color-surface-container)' }}
     >
       <div className="flex flex-wrap items-center min-h-14 py-2 lg:py-0 px-3 sm:px-6 gap-y-3 gap-x-2">

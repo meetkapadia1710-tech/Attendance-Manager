@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'Mann Beauty Studio Attendance',
         short_name: 'Mann Beauty',
         description: 'Premium attendance management system for Mann Beauty Studio.',
-        theme_color: '#201a1e',
-        background_color: '#201a1e',
+        theme_color: '#f5ecef',
+        background_color: '#f5ecef',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
