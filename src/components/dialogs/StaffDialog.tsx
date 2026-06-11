@@ -19,8 +19,9 @@ export function StaffDialog() {
   const editId = isEdit ? dialog.staffId : null;
 
   const [name,    setName]    = useState('');
-  const [role,    setRole]    = useState(ROLES[0]);
-  const [saving,  setSaving]  = useState(false);
+  const [role,        setRole]        = useState(ROLES[0]);
+  const [roleOpen,    setRoleOpen]    = useState(false);
+  const [saving,      setSaving]      = useState(false);
   const [shake,   setShake]   = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -136,23 +137,60 @@ export function StaffDialog() {
               </motion.div>
 
               {/* Role */}
-              <div>
+              <div className="relative">
                 <label className="block text-[11px] font-bold text-[color:var(--color-on-surface-variant)] mb-1.5 uppercase tracking-wide">
                   Role
                 </label>
-                <div className="relative bg-[color:var(--color-surface-variant)] rounded-t-lg hover:bg-[color:var(--color-surface-container-highest)] transition-colors">
-                  <select
-                    value={role}
-                    onChange={e => setRole(e.target.value)}
-                    className="w-full bg-transparent border-none outline-none px-4 py-3.5 text-[color:var(--color-on-surface)] text-sm font-medium appearance-none cursor-pointer pr-10"
+                <button
+                  type="button"
+                  onClick={() => setRoleOpen(!roleOpen)}
+                  className="w-full relative bg-[color:var(--color-surface-variant)] rounded-t-lg hover:bg-[color:var(--color-surface-container-highest)] transition-colors flex items-center justify-between px-4 py-3.5 text-left"
+                >
+                  <span className="text-[color:var(--color-on-surface)] text-sm font-medium">{role}</span>
+                  <motion.span
+                    animate={{ rotate: roleOpen ? 180 : 0 }}
+                    className="material-symbols-outlined text-[color:var(--color-on-surface-variant)]"
+                    style={{ fontSize: 20 }}
                   >
-                    {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
-                  </select>
-                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--color-on-surface-variant)] pointer-events-none" style={{ fontSize: 20 }}>
                     expand_more
-                  </span>
+                  </motion.span>
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[color:var(--color-outline)]" />
-                </div>
+                  <motion.div
+                    className="absolute bottom-0 left-0 h-0.5 bg-[color:var(--color-primary)]"
+                    animate={{ width: roleOpen ? '100%' : '0%' }}
+                    transition={{ duration: 0.25 }}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {roleOpen && (
+                    <>
+                      {/* Invisible backdrop to catch outside clicks */}
+                      <div className="fixed inset-0 z-[190]" onClick={() => setRoleOpen(false)} />
+                      
+                      <motion.div
+                        initial={{ opacity: 0, y: -4, scaleY: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                        exit={{ opacity: 0, y: -4, scaleY: 0.95 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="absolute top-full left-0 right-0 mt-1 bg-[color:var(--color-surface-container-high)] border border-[color:var(--color-outline-variant)] rounded-xl shadow-lg z-[200] overflow-hidden origin-top max-h-[220px] flex flex-col"
+                      >
+                        <div className="overflow-y-auto py-1">
+                          {ROLES.map(r => (
+                            <button
+                              key={r}
+                              type="button"
+                              onClick={() => { setRole(r); setRoleOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${role === r ? 'bg-[color:var(--color-primary-container)] text-[color:var(--color-on-primary-container)] font-bold' : 'text-[color:var(--color-on-surface)] hover:bg-[color:var(--color-surface-container-highest)] font-medium'}`}
+                            >
+                              {r}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 

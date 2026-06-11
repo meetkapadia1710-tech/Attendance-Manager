@@ -10,10 +10,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { initializeApp } from 'firebase/app';
-import {
-  getFirestore,
-  enableIndexedDbPersistence,
-} from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -30,16 +27,6 @@ const app = initializeApp(firebaseConfig);
 /** Firestore instance shared across the app */
 export const firestore = getFirestore(app);
 
-// Enable offline persistence (app works without internet)
-enableIndexedDbPersistence(firestore).catch(err => {
-  if (err.code === 'failed-precondition') {
-    // Multiple tabs open — persistence only works in one tab at a time
-    console.warn('[Firebase] Offline persistence disabled: multiple tabs');
-  } else if (err.code === 'unimplemented') {
-    // Browser doesn't support IndexedDB
-    console.warn('[Firebase] Offline persistence not supported');
-  }
-});
 
 /** Firebase Auth instance */
 export const auth = getAuth(app);
