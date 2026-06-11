@@ -30,15 +30,13 @@ export function GridView() {
   const isEmpty = !loadingStaff && staff.length === 0;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden p-4 md:p-6 pt-3 gap-3">
+    <div className="flex-1 flex flex-col overflow-hidden p-2 sm:p-4 md:p-6 pt-2 sm:pt-3 gap-3">
       {/* Stats bar */}
       {!isEmpty && staff.length > 0 && (
-        <div className="flex items-center gap-4 text-sm flex-wrap shrink-0">
+        <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 px-1 shrink-0" style={{ WebkitOverflowScrolling: 'touch' }}>
           <Stat icon="group" label={`${staff.length} staff`} />
-          <div className="w-px h-4 bg-[color:var(--color-outline-variant)]" />
           <Stat icon="schedule" label={`${minsToHrStr(monthlyMins)} this month`} />
-          <div className="w-px h-4 bg-[color:var(--color-outline-variant)]" />
-          <Stat icon="check_circle" label={`${presentToday} present today`} color="text-green-700" iconFill />
+          <Stat icon="check_circle" label={`${presentToday} present today`} color="text-green-800 bg-green-100 dark:bg-green-900/30 dark:text-green-300" iconFill />
         </div>
       )}
 
@@ -58,7 +56,7 @@ export function GridView() {
           </button>
         </div>
       ) : (
-        <div className="flex-1 bg-[color:var(--color-surface)] rounded-2xl border border-[color:var(--color-outline-variant)] overflow-hidden flex flex-col shadow-sm">
+        <div className="flex-1 bg-[color:var(--color-surface)] rounded-xl sm:rounded-2xl border border-[color:var(--color-outline-variant)] overflow-hidden flex flex-col shadow-sm">
           <AttendanceGrid />
         </div>
       )}
@@ -66,13 +64,13 @@ export function GridView() {
   );
 }
 
-function Stat({ icon, label, color = 'text-[color:var(--color-on-surface-variant)]', iconFill = false }: {
+function Stat({ icon, label, color = 'text-[color:var(--color-on-surface)] bg-[color:var(--color-surface-container-highest)]', iconFill = false }: {
   icon: string; label: string; color?: string; iconFill?: boolean;
 }) {
   return (
-    <div className={`flex items-center gap-1.5 ${color}`}>
+    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm shrink-0 border border-[color:var(--color-outline-variant)] ${color}`}>
       <span className={`material-symbols-outlined text-[16px] ${iconFill ? 'fill' : ''}`}>{icon}</span>
-      <span className="font-medium">{label}</span>
+      <span className="font-semibold whitespace-nowrap">{label}</span>
     </div>
   );
 }
