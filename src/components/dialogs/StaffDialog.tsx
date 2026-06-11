@@ -89,7 +89,7 @@ export function StaffDialog() {
           <motion.div
             variants={cardV} initial="hidden" animate="visible" exit="exit"
             role="dialog" aria-modal="true"
-            className="bg-[color:var(--color-surface-container-high)] rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
+            className="bg-[color:var(--color-surface-container-high)] rounded-2xl shadow-2xl w-full max-w-sm"
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
@@ -195,7 +195,7 @@ export function StaffDialog() {
             </div>
 
             {/* Actions */}
-            <div className="px-6 py-4 flex justify-end gap-2 border-t border-[color:var(--color-outline-variant)] bg-[color:var(--color-surface-container-low)]">
+            <div className="px-6 py-4 flex justify-end gap-2 border-t border-[color:var(--color-outline-variant)] bg-[color:var(--color-surface-container-low)] rounded-b-2xl">
               <button
                 onClick={closeDialog}
                 disabled={saving}
