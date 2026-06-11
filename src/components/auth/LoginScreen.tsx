@@ -23,7 +23,7 @@ export function LoginScreen({ onUnlocked }: { onUnlocked: () => void }) {
     // Small delay for perceived security
     await new Promise(r => setTimeout(r, 500));
 
-    const ok = unlock(key);
+    const ok = await unlock(key);
     setLoading(false);
 
     if (ok) {

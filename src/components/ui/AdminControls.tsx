@@ -1,13 +1,15 @@
 /**
  * AdminControls.tsx
  * Shows in the Header when admin is unlocked.
- * Provides a "Lock" button to end the admin session.
+ * Provides a "Change Key" button and a "Lock" button.
  */
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useStore } from '../../store/useStore';
 
 export function AdminControls() {
   const { lock } = useAuthStore();
+  const { openDialog } = useStore();
 
   return (
     <motion.div
@@ -34,10 +36,26 @@ export function AdminControls() {
         </span>
       </div>
 
+      {/* Change Key button */}
+      <button
+        onClick={() => openDialog({ type: 'changeKey' })}
+        title="Change secret key"
+        id="admin-change-key-btn"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-colors active:scale-95 text-xs font-semibold"
+        style={{
+          borderColor: 'var(--color-outline-variant)',
+          color: 'var(--color-on-surface-variant)',
+        }}
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: 15 }}>key</span>
+        <span className="hidden sm:inline">Change Key</span>
+      </button>
+
       {/* Lock button */}
       <button
         onClick={lock}
         title="Lock dashboard"
+        id="admin-lock-btn"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-colors active:scale-95 text-xs font-semibold"
         style={{
           borderColor: 'var(--color-outline-variant)',

@@ -23,6 +23,7 @@ import { SummaryView } from './components/views/SummaryView';
 import { TimeEntryDialog } from './components/dialogs/TimeEntryDialog';
 import { StaffDialog } from './components/dialogs/StaffDialog';
 import { DeleteDialog } from './components/dialogs/DeleteDialog';
+import { ChangeKeyDialog } from './components/dialogs/ChangeKeyDialog';
 
 // UI
 import { ToastContainer } from './components/ui/Toast';
@@ -126,6 +127,7 @@ export default function App() {
           <TimeEntryDialog />
           <StaffDialog />
           <DeleteDialog />
+          <ChangeKeyDialog />
 
           <ToastContainer />
         </motion.div>

@@ -280,7 +280,7 @@ interface PasswordFieldProps {
   matchOk?: boolean;
   id: string;
   placeholder?: string;
-  inputRef?: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }
 
 function PasswordField({

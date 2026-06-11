@@ -12,12 +12,12 @@ let _uid = 0;
 const mkBlock = (b: TimeBlock = { in: '', out: '' }): BlockRow => ({ ...b, _id: `b${++_uid}` });
 
 const overlayV = {
-  hidden:  { opacity: 0 },
+  hidden: { opacity: 0 },
   visible: { opacity: 1 },
-  exit:    { opacity: 0 },
+  exit: { opacity: 0 },
 };
 const cardV = {
-  hidden:  { opacity: 0, scale: 0.93, y: 24 },
+  hidden: { opacity: 0, scale: 0.93, y: 24 },
   visible: {
     opacity: 1, scale: 1, y: 0,
     transition: { type: 'spring' as const, stiffness: 400, damping: 30 },
@@ -27,23 +27,23 @@ const cardV = {
 
 export function TimeEntryDialog() {
   const { dialog, closeDialog, addToast, staff, attendance } = useStore();
-  const open    = dialog?.type === 'time';
+  const open = dialog?.type === 'time';
   const staffId = open ? dialog.staffId : '';
-  const date    = open ? dialog.date    : '';
+  const date = open ? dialog.date : '';
 
   const sIdx = staff.findIndex(s => s.id === staffId);
   const sObj = staff[sIdx] ?? null;
 
   const [blocks, setBlocks] = useState<BlockRow[]>([mkBlock()]);
-  const [saving,  setSaving]  = useState(false);
-  const [saved,   setSaved]   = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const inRef = useRef<any>(null);
 
   // Load existing entry from reactive store (not db)
   useEffect(() => {
     if (!open) return;
-    const key   = `${date}__${staffId}`;
-    const entry: AttendanceEntry = attendance[key] ?? {};
+    const key = `${date}__${staffId}`;
+    const entry: AttendanceEntry = attendance[key] ?? { timeIn: '', timeOut: '', blocks: [] };
     const norm = normalizeBlocks(entry);
     setBlocks(norm.length ? norm.map(mkBlock) : [mkBlock()]);
     setSaving(false);
@@ -210,7 +210,7 @@ export function TimeEntryDialog() {
                     );
                   })}
                 </AnimatePresence>
-                
+
                 <button
                   onClick={addBlock}
                   className="self-start text-sm font-semibold text-[color:var(--color-primary)] hover:bg-[color:var(--color-surface-container-highest)] px-3 py-1.5 rounded-full transition-colors active:scale-95 flex items-center gap-1.5 mt-1"
@@ -248,8 +248,8 @@ export function TimeEntryDialog() {
                   className="text-sm font-bold flex items-center gap-1"
                   style={{
                     color: isError ? 'var(--color-error)' :
-                           totalMins > 0 ? 'var(--color-primary)' :
-                           'var(--color-on-surface-variant)',
+                      totalMins > 0 ? 'var(--color-primary)' :
+                        'var(--color-on-surface-variant)',
                   }}
                 >
                   <span className="material-symbols-outlined text-[16px]">schedule</span>
@@ -310,7 +310,7 @@ export function TimeEntryDialog() {
 }
 
 const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const MINS = ['00','05','10','15','20','25','30','35','40','45','50','55'];
+const MINS = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
 function TimeField({
   label, value, onChange, error = false, inputRef,
@@ -342,7 +342,7 @@ function TimeField({
   const setTime = (h: string | number, m: string | number, ap: string) => {
     let finalH = parseInt(h.toString(), 10) || 12;
     let finalM = parseInt(m.toString(), 10) || 0;
-    
+
     // clamp minutes
     if (finalM < 0) finalM = 59;
     if (finalM > 59) finalM = 0;
@@ -350,7 +350,7 @@ function TimeField({
     let h24Val = finalH;
     if (ap === 'PM' && finalH < 12) h24Val += 12;
     if (ap === 'AM' && finalH === 12) h24Val = 0;
-    
+
     onChange(`${h24Val.toString().padStart(2, '0')}:${finalM.toString().padStart(2, '0')}`);
   };
 
@@ -368,10 +368,10 @@ function TimeField({
         style={{ background: error ? 'var(--color-error-container)' : 'var(--color-surface-variant)' }}
       >
         <div className="px-3 pt-2 pb-2 w-full flex items-center justify-between">
-           <span className="text-base font-semibold" style={{ color: value ? 'var(--color-on-surface)' : 'var(--color-on-surface-variant)' }}>
-             {value ? `${h12.padStart(2, '0')}:${min} ${ampm}` : '--:--'}
-           </span>
-           <span className="material-symbols-outlined text-[18px] opacity-50 text-[color:var(--color-on-surface)]">schedule</span>
+          <span className="text-base font-semibold" style={{ color: value ? 'var(--color-on-surface)' : 'var(--color-on-surface-variant)' }}>
+            {value ? `${h12.padStart(2, '0')}:${min} ${ampm}` : '--:--'}
+          </span>
+          <span className="material-symbols-outlined text-[18px] opacity-50 text-[color:var(--color-on-surface)]">schedule</span>
         </div>
         <div
           className="absolute bottom-0 left-0 right-0 h-0.5"
@@ -401,11 +401,11 @@ function TimeField({
                 Time
               </span>
               <div className="flex bg-[color:var(--color-surface-variant)] p-1 rounded-lg">
-                <button 
+                <button
                   onClick={(e) => { e.stopPropagation(); setTime(h12 || 12, min, 'AM'); }}
                   className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${ampm === 'AM' ? 'bg-[color:var(--color-primary)] text-[color:var(--color-on-primary)] shadow-sm' : 'text-[color:var(--color-on-surface-variant)] hover:bg-[color:var(--color-surface-container-highest)]'}`}
                 >AM</button>
-                <button 
+                <button
                   onClick={(e) => { e.stopPropagation(); setTime(h12 || 12, min, 'PM'); }}
                   className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${ampm === 'PM' ? 'bg-[color:var(--color-primary)] text-[color:var(--color-on-primary)] shadow-sm' : 'text-[color:var(--color-on-surface-variant)] hover:bg-[color:var(--color-surface-container-highest)]'}`}
                 >PM</button>
@@ -417,8 +417,8 @@ function TimeField({
                 <div className="text-[11px] font-extrabold text-[color:var(--color-on-surface-variant)] tracking-wider mb-2.5 uppercase">Hour</div>
                 <div className="grid grid-cols-3 gap-1.5">
                   {HOURS.map(h => (
-                    <button 
-                      key={h} 
+                    <button
+                      key={h}
                       onClick={(e) => { e.stopPropagation(); setTime(h, min, ampm); }}
                       className={`h-9 rounded-lg text-sm font-bold flex items-center justify-center transition-colors active:scale-95 ${parseInt(h12) === h ? 'bg-[color:var(--color-primary)] text-[color:var(--color-on-primary)]' : 'hover:bg-[color:var(--color-surface-container-highest)] text-[color:var(--color-on-surface)]'}`}
                     >
@@ -432,11 +432,11 @@ function TimeField({
                 <div className="flex justify-between items-center mb-2">
                   <div className="text-[11px] font-extrabold text-[color:var(--color-on-surface-variant)] tracking-wider uppercase">Minute</div>
                   <div className="flex gap-1 items-center bg-[color:var(--color-surface-variant)] rounded px-1 py-0.5">
-                    <button 
+                    <button
                       onClick={(e) => { e.stopPropagation(); setTime(h12 || 12, parseInt(min || '0') - 1, ampm); }}
                       className="text-[color:var(--color-on-surface-variant)] hover:text-[color:var(--color-on-surface)] text-[14px] font-black px-1.5 active:scale-90"
                     >-</button>
-                    <button 
+                    <button
                       onClick={(e) => { e.stopPropagation(); setTime(h12 || 12, parseInt(min || '0') + 1, ampm); }}
                       className="text-[color:var(--color-on-surface-variant)] hover:text-[color:var(--color-on-surface)] text-[14px] font-black px-1.5 active:scale-90"
                     >+</button>
@@ -444,8 +444,8 @@ function TimeField({
                 </div>
                 <div className="grid grid-cols-3 gap-1.5">
                   {MINS.map(m => (
-                    <button 
-                      key={m} 
+                    <button
+                      key={m}
                       onClick={(e) => { e.stopPropagation(); setTime(h12 || 12, m, ampm); setOpen(false); }}
                       className={`h-9 rounded-lg text-sm font-bold flex items-center justify-center transition-colors active:scale-95 ${min === m ? 'bg-[color:var(--color-primary)] text-[color:var(--color-on-primary)]' : 'hover:bg-[color:var(--color-surface-container-highest)] text-[color:var(--color-on-surface)]'}`}
                     >
