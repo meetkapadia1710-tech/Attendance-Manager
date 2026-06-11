@@ -60,15 +60,34 @@ export default function App() {
       const entries = staff.map(s => attendance[`${date}__${s.id}`] ?? null);
       let rowTotal = 0;
 
-      const ins  = entries.map(e => e?.timeIn  ? fmt12(e.timeIn)  : '');
-      const outs = entries.map(e => e?.timeOut ? fmt12(e.timeOut) : '');
+      const ins  = entries.map(e => {
+        if (e?.blocks?.length) return e.blocks.map(b => b.timeIn ? fmt12(b.timeIn) : '').filter(Boolean).join(', ');
+        return e?.timeIn ? fmt12(e.timeIn) : '';
+      });
+      const outs = entries.map(e => {
+        if (e?.blocks?.length) return e.blocks.map(b => b.timeOut ? fmt12(b.timeOut) : '').filter(Boolean).join(', ');
+        return e?.timeOut ? fmt12(e.timeOut) : '';
+      });
       const hrs  = entries.map((e, i) => {
-        if (!e?.timeIn || !e?.timeOut) return '';
-        const m = calcMins(e.timeIn, e.timeOut);
-        if (typeof m !== 'number' || m <= 0) return 'ERR';
-        colTotals[i] += m;
-        rowTotal += m;
-        return minsToHrStr(m);
+        let entryTotal = 0;
+        if (e?.blocks?.length) {
+          e.blocks.forEach(b => {
+            if (b.timeIn && b.timeOut) {
+              const m = calcMins(b.timeIn, b.timeOut);
+              if (typeof m === 'number' && m > 0) entryTotal += m;
+            }
+          });
+        } else if (e?.timeIn && e?.timeOut) {
+          const m = calcMins(e.timeIn, e.timeOut);
+          if (typeof m === 'number' && m > 0) entryTotal += m;
+        }
+        
+        if (entryTotal > 0) {
+          colTotals[i] += entryTotal;
+          rowTotal += entryTotal;
+          return minsToHrStr(entryTotal);
+        }
+        return '';
       });
 
       rows.push([date, ...ins, ...outs, ...hrs, rowTotal > 0 ? minsToHrStr(rowTotal) : '']);

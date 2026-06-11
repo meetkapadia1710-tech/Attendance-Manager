@@ -13,14 +13,22 @@ export function GridView() {
 
   staff.forEach(s => {
     const e = attendance[`${todayStr}__${s.id}`];
-    if (e?.timeIn) presentToday++;
+    if (e?.blocks?.length > 0 || e?.timeIn) presentToday++;
   });
 
   for (let d = 1; d <= days; d++) {
     const date = isoDate(year, month, d);
     staff.forEach(s => {
       const e = attendance[`${date}__${s.id}`];
-      if (e?.timeIn && e?.timeOut) {
+      if (!e) return;
+      if (e.blocks?.length) {
+        e.blocks.forEach(b => {
+          if (b.timeIn && b.timeOut) {
+            const m = calcMins(b.timeIn, b.timeOut);
+            if (typeof m === 'number' && m > 0) monthlyMins += m;
+          }
+        });
+      } else if (e.timeIn && e.timeOut) {
         const m = calcMins(e.timeIn, e.timeOut);
         if (typeof m === 'number' && m > 0) monthlyMins += m;
       }

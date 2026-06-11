@@ -14,9 +14,22 @@ export function SummaryView({ onExport }: { onExport: () => void }) {
       let totalMins = 0, daysWorked = 0;
       for (let d = 1; d <= daysCount; d++) {
         const e = attendance[`${isoDate(year, month, d)}__${s.id}`];
-        if (e?.timeIn && e?.timeOut) {
+        if (!e) continue;
+        let dayMins = 0;
+        if (e.blocks?.length) {
+          e.blocks.forEach(b => {
+            if (b.timeIn && b.timeOut) {
+              const m = calcMins(b.timeIn, b.timeOut);
+              if (typeof m === 'number' && m > 0) dayMins += m;
+            }
+          });
+        } else if (e.timeIn && e.timeOut) {
           const m = calcMins(e.timeIn, e.timeOut);
-          if (typeof m === 'number' && m > 0) { totalMins += m; daysWorked++; }
+          if (typeof m === 'number' && m > 0) dayMins += m;
+        }
+        if (dayMins > 0) {
+          totalMins += dayMins;
+          daysWorked++;
         }
       }
       return { ...s, totalMins, daysWorked, avgMins: daysWorked > 0 ? totalMins / daysWorked : 0 };
