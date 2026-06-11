@@ -18,8 +18,8 @@ export function SummaryView({ onExport }: { onExport: () => void }) {
         let dayMins = 0;
         if (e.blocks?.length) {
           e.blocks.forEach(b => {
-            if (b.timeIn && b.timeOut) {
-              const m = calcMins(b.timeIn, b.timeOut);
+            if (b.in && b.out) {
+              const m = calcMins(b.in, b.out);
               if (typeof m === 'number' && m > 0) dayMins += m;
             }
           });

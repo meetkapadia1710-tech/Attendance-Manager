@@ -61,19 +61,19 @@ export default function App() {
       let rowTotal = 0;
 
       const ins  = entries.map(e => {
-        if (e?.blocks?.length) return e.blocks.map(b => b.timeIn ? fmt12(b.timeIn) : '').filter(Boolean).join(', ');
+        if (e?.blocks?.length) return e.blocks.map(b => b.in ? fmt12(b.in) : '').filter(Boolean).join(', ');
         return e?.timeIn ? fmt12(e.timeIn) : '';
       });
       const outs = entries.map(e => {
-        if (e?.blocks?.length) return e.blocks.map(b => b.timeOut ? fmt12(b.timeOut) : '').filter(Boolean).join(', ');
+        if (e?.blocks?.length) return e.blocks.map(b => b.out ? fmt12(b.out) : '').filter(Boolean).join(', ');
         return e?.timeOut ? fmt12(e.timeOut) : '';
       });
       const hrs  = entries.map((e, i) => {
         let entryTotal = 0;
         if (e?.blocks?.length) {
           e.blocks.forEach(b => {
-            if (b.timeIn && b.timeOut) {
-              const m = calcMins(b.timeIn, b.timeOut);
+            if (b.in && b.out) {
+              const m = calcMins(b.in, b.out);
               if (typeof m === 'number' && m > 0) entryTotal += m;
             }
           });
